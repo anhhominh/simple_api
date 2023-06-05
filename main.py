@@ -3,6 +3,7 @@ from typing import Optional
 from typing import List
 from uuid import UUID, uuid4
 from pydantic import BaseModel, Field
+from fastapi.middleware.cors import CORSMiddleware
 
 class Item(BaseModel):
     id: Optional[UUID] = Field(default_factory=uuid4)
@@ -20,6 +21,16 @@ class ItemUpdate(BaseModel):
     content: str
 
 app = FastAPI()
+
+origins = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 db: List[Item] = []
 
