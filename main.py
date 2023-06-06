@@ -32,27 +32,27 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-db: List[Item] = []
+list_item = []
 
 @app.get("/items/")
 async def get_item():
-    return db
+    return list_item
 
 @app.post("/items/")
 async def create_item(item: Item):
-    db.append(item)
+    list_item.append(item)
     return {"id":item.id}
 
 @app.delete("/items/{item_id}")
 async def delete_item(item_id: UUID):
-    for item in db:
+    for item in list_item:
         if item.id == item_id:
-            db.remove(item)
+            list_item.remove(item)
             return
         
 @app.put("/items/{item_id}")
 async def update_item(item_update: ItemUpdate, item_id: UUID):
-    for item in db:
+    for item in list_item:
         if item.id == item_id:
             if item_update.booking is not None:
                 item.booking = item_update.booking
